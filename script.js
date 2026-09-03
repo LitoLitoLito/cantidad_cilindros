@@ -126,7 +126,20 @@ function calcular() {
   }
 
   let cilindrosActivosFloat = consumo / capacidadCorregida;
-  let cilindrosActivos = Math.ceil(cilindrosActivosFloat);
+  
+  // NUEVA LÓGICA: Redondear al alza SOLO si el primer decimal es > 0
+  // Extraer el primer decimal
+  const primerDecimal = Math.floor((cilindrosActivosFloat % 1) * 10);
+  
+  let cilindrosActivos;
+  if (primerDecimal === 0) {
+    // Si el primer decimal es 0, redondear hacia abajo
+    cilindrosActivos = Math.floor(cilindrosActivosFloat);
+  } else {
+    // Si el primer decimal es > 0, redondear al alza
+    cilindrosActivos = Math.ceil(cilindrosActivosFloat);
+  }
+  
   if (cilindrosActivos < 1) cilindrosActivos = 1;
 
   const reserva = cilindrosActivos;
@@ -166,13 +179,21 @@ function calcular() {
     `;
   }
 
-  // Paso 2
+  // Paso 2 - Actualizado para mostrar el tipo de redondeo
+  let redondeoExplicacion;
+  if (primerDecimal === 0) {
+    redondeoExplicacion = `(redondeo a ${cilindrosActivos} porque el primer decimal es 0)`;
+  } else {
+    redondeoExplicacion = `(redondeo al alza de ${cilindrosActivosFloat.toFixed(2)} a ${cilindrosActivos})`;
+  }
+  
   document.getElementById('pasoCilindros').innerHTML = `
     <div><strong>Fórmula:</strong> Cilindros activos = Consumo / Capacidad corregida</div>
     <div><strong>Consumo:</strong> ${formatearNumero(consumo)} kcal/h</div>
     <div><strong>Capacidad corregida:</strong> ${capacidadCorregida.toFixed(2)} kcal/h</div>
-    <div><strong>Resultado:</strong> ${formatearNumero(consumo)} / ${capacidadCorregida.toFixed(2)} = ${cilindrosActivosFloat.toFixed(2)}</div>
-    <div class="resultado-paso"><strong>Cilindros activos =</strong> ${cilindrosActivos} (redondeo al alza)</div>
+    <div><strong>Resultado:</strong> ${formatearNumero(consumo)} / ${capacidadCorregida.toFixed(2)} = ${cilindrosActivosFloat.toFixed(4)}</div>
+    <div><strong>Primer decimal:</strong> ${primerDecimal}</div>
+    <div class="resultado-paso"><strong>Cilindros activos =</strong> ${cilindrosActivos} ${redondeoExplicacion}</div>
   `;
 
   // Paso 3
