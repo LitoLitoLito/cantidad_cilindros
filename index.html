@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora · Batería de Cilindros GLP</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="calculator-card" id="contenidoReporte">
+  <h1>
+    🧮 Batería GLP
+    <small>uso + reserva</small>
+  </h1>
+
+  <!-- Campos de entrada -->
+  <div class="input-grid">
+    <div class="input-group">
+      <label>🏠 Consumo total <span>*</span></label>
+      <input type="number" id="consumo" value="12500" step="100" min="1000">
+      <span class="hint">kcal/h (ej: 12 500)</span>
+    </div>
+    
+    <div class="input-group">
+      <label>📍 Localidad <span>*</span></label>
+      <select id="localidad"></select>
+      <span class="hint">Seleccione una localidad</span>
+    </div>
+
+    <div class="input-group">
+      <label>🌡️ Rango de temperatura <span>*</span></label>
+      <select id="rango"></select>
+      <span class="hint">Según Tabla N° 4</span>
+    </div>
+
+    <div class="input-group">
+      <label>📊 Temperatura base</label>
+      <input type="number" id="tempBase" step="0.5" readonly class="readonly-input">
+      <span class="hint">°C (del rango seleccionado)</span>
+    </div>
+
+    <div class="input-group">
+      <label>⬆️ Capacidad base</label>
+      <input type="number" id="capBase" step="100" readonly class="readonly-input">
+      <span class="hint">kcal/h (del rango seleccionado)</span>
+    </div>
+
+    <div class="input-group">
+      <label>🌡️ Temperatura localidad</label>
+      <input type="number" id="tempLocalidad" step="0.5" readonly class="readonly-input">
+      <span class="hint">°C (de la tabla N° 3)</span>
+    </div>
+  </div>
+
+  <!-- Tabla de referencia (visual) -->
+  <div class="tabla-referencia">
+    <p><strong>⚙️ Referencia:</strong> <span id="refTexto">Rango B (−5°C) → 8.000 kcal/h</span></p>
+    <span class="zona-badge" id="rangoBadge">Rango B</span>
+  </div>
+
+  <!-- Resultados principales -->
+  <div class="result-box" id="resultBox">
+    <div class="result-item">
+      <span class="label">⚡ Capacidad corregida</span>
+      <span class="value" id="capacidadCorregida">8.182 <small>kcal/h</small></span>
+    </div>
+    <div class="result-item">
+      <span class="label">🧯 Cilindros activos</span>
+      <span class="value" id="cilindrosActivos">2</span>
+    </div>
+    <div class="badge-total" id="totalBadge">4</div>
+  </div>
+
+  <!-- Detalle de reserva -->
+  <div class="detalle-reserva">
+    <span><span style="font-weight:600;">🔹 En uso:</span> <span id="usoDetalle" class="numero">2</span></span>
+    <span><span style="font-weight:600;">🔸 Reserva:</span> <span id="reservaDetalle" class="numero">2</span></span>
+    <span><span style="font-weight:600;">🧩 Total batería:</span> <span id="totalDetalle" class="numero" style="background:#b8d0e5;">4</span></span>
+  </div>
+
+  <!-- Detalle de cálculos -->
+  <div class="detalle-calculoss">
+    <h3>📋 Detalle de cálculos</h3>
+    <div class="pasos">
+      <div class="paso">
+        <span class="paso-numero">1</span>
+        <div class="paso-contenido">
+          <span class="paso-titulo">Interpolación de capacidad</span>
+          <div class="paso-detalle" id="pasoInterpolacion">
+            <div>Diferencia de temperatura: 5,5 °C</div>
+            <div>Diferencia de capacidad: 1.000 kcal/h</div>
+            <div>Incremento: 181,82 kcal/h</div>
+            <div class="resultado-paso">Capacidad corregida = 8.181,82 kcal/h</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="paso">
+        <span class="paso-numero">2</span>
+        <div class="paso-contenido">
+          <span class="paso-titulo">Cálculo de cilindros activos</span>
+          <div class="paso-detalle" id="pasoCilindros">
+            <div>Consumo / Capacidad corregida</div>
+            <div>12.500 / 8.181,82 = 1,53</div>
+            <div class="resultado-paso">Cilindros activos = 2 (redondeo al alza)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="paso">
+        <span class="paso-numero">3</span>
+        <div class="paso-contenido">
+          <span class="paso-titulo">Determinación de batería total</span>
+          <div class="paso-detalle" id="pasoTotal">
+            <div>Cilindros en uso: 2</div>
+            <div>Cilindros de reserva: 2 (misma cantidad)</div>
+            <div class="resultado-paso">Total batería = 4 cilindros</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    ⚠️ Redondeo estricto al alza · Esquema simétrico (uso = reserva) · Normativa GLP
+  </div>
+</div>
+
+<!-- Botón PDF -->
+<div class="acciones">
+  <button class="btn-pdf" id="btnPdf">📄 Guardar como PDF</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
