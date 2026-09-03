@@ -355,6 +355,16 @@ h1 small {
   transform: none;
 }
 
+/* Ocultar el select de rango en la interfaz */
+#rango {
+  display: none !important;
+}
+
+/* Ocultar el contenedor del rango */
+.input-group:has(#rango) {
+  display: none !important;
+}
+
 @media (max-width: 650px) {
   .calculator-card { padding: 1.5rem; }
   .input-grid { grid-template-columns: 1fr; gap: 1rem; padding: 1rem; }
@@ -449,6 +459,15 @@ h1 small {
 
   .footer-note {
     border-top: 1px solid #c9d9e9 !important;
+  }
+
+  /* Ocultar el select de rango en impresión */
+  #rango {
+    display: none !important;
+  }
+  
+  .input-group:has(#rango) {
+    display: none !important;
   }
 
   /* Evitar que se corten elementos en páginas */
